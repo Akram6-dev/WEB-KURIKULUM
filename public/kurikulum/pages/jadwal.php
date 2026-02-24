@@ -36,7 +36,7 @@ if(!empty($_GET['edit'])){
 $kelasOpt = $conn->query('SELECT id_kelas,nama_kelas FROM kelas ORDER BY nama_kelas');
 $res=$conn->query('SELECT * FROM jadwal ORDER BY FIELD(hari,"Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"),jam_mulai');
 ?>
-<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Jadwal</title><link rel="stylesheet" href="../assets/css/style.css"></head>
+<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Jadwal</title><link rel="stylesheet" href="../assets/css/style.css"><link rel="stylesheet" href="../assets/css/timepicker.css"></head>
 <body><?php include '../assets/templates/topbar_public.php'; ?>
 <div class="main-content container">
 <h1>Jadwal Pelajaran</h1>
@@ -57,8 +57,8 @@ $res=$conn->query('SELECT * FROM jadwal ORDER BY FIELD(hari,"Senin","Selasa","Ra
 <option value="<?php echo $h;?>" <?php echo ($editData && $editData['hari']==$h) ? 'selected' : '';?>><?php echo $h;?></option>
 <?php endforeach; ?>
 </select>
-<input type="time" name="jam_mulai" placeholder="Jam Mulai" value="<?php echo $editData ? htmlspecialchars($editData['jam_mulai']) : '';?>" required style="width:100%;padding:8px;margin:5px 0;">
-<input type="time" name="jam_selesai" placeholder="Jam Selesai" value="<?php echo $editData ? htmlspecialchars($editData['jam_selesai']) : '';?>" required style="width:100%;padding:8px;margin:5px 0;">
+<input type="text" id="jam_mulai" name="jam_mulai" class="timepicker-input" placeholder="Jam Mulai (WIB)" value="<?php echo $editData ? htmlspecialchars($editData['jam_mulai']) : '';?>" required style="width:100%;padding:8px 40px 8px 8px;margin:5px 0;">
+<input type="text" id="jam_selesai" name="jam_selesai" class="timepicker-input" placeholder="Jam Selesai (WIB)" value="<?php echo $editData ? htmlspecialchars($editData['jam_selesai']) : '';?>" required style="width:100%;padding:8px 40px 8px 8px;margin:5px 0;">
 <input type="text" name="mapel" placeholder="Mata Pelajaran" value="<?php echo $editData ? htmlspecialchars($editData['mapel']) : '';?>" required style="width:100%;padding:8px;margin:5px 0;">
 <input type="text" name="guru" placeholder="Guru Pengajar" value="<?php echo $editData ? htmlspecialchars($editData['guru_pengampu']) : '';?>" required style="width:100%;padding:8px;margin:5px 0;">
 <button type="submit" name="<?php echo $editData ? 'edit' : 'add';?>" class="btn" style="margin-top:10px;"><?php echo $editData ? 'Update' : 'Tambah';?></button>
@@ -92,4 +92,5 @@ $res=$conn->query('SELECT * FROM jadwal ORDER BY FIELD(hari,"Senin","Selasa","Ra
 </table>
 </div>
 </div>
+<script src="../assets/js/timepicker.js"></script>
 </body></html>
