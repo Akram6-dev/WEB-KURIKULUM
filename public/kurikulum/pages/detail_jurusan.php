@@ -49,10 +49,14 @@ $logoFile = $prog ? ($logoMap[$prog['nama_jurusan']] ?? 'pplg.png') : 'pplg.png'
         $kq->execute();
         $kr = $kq->get_result();
         while($kl = $kr->fetch_assoc()){
+          $sq = $conn->prepare('SELECT COUNT(*) as total FROM siswa WHERE id_kelas=?');
+          $sq->bind_param('i',$kl['id_kelas']);
+          $sq->execute();
+          $jml = $sq->get_result()->fetch_assoc()['total'];
           echo '<div class="kelas-card">';
           echo '<h4>'.htmlspecialchars($kl['nama_kelas']).'</h4>';
           echo '<p style="margin:8px 0;color:#64748b;"><strong>Wali Kelas:</strong><br>'.htmlspecialchars($kl['wali_kelas']?:'-').'</p>';
-          echo '<p style="margin:8px 0;color:#64748b;"><strong>Jumlah Siswa:</strong> '.intval($kl['jumlah_siswa']).'</p>';
+          echo '<p style="margin:8px 0;color:#64748b;"><strong>Jumlah Siswa:</strong> '.$jml.'</p>';
           echo '<a class="btn-outline" href="detail_kelas.php?id='.intval($kl['id_kelas']).'">Lihat Detail</a>';
           echo '</div>';
         }

@@ -82,6 +82,13 @@ CREATE TABLE materi (
   FOREIGN KEY (id_kelas) REFERENCES kelas(id_kelas)
 );
 
+CREATE TABLE admin (
+  id_admin INT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(50) NOT NULL UNIQUE,
+  password VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 INSERT INTO jurusan (nama_jurusan,keterangan,deskripsi,logo) VALUES
 ('PPLG','Pengembangan Perangkat Lunak dan Gim','Pengembangan Perangkat Lunak dan Gim','pplg.png'),
 ('TJKT','Teknik Jaringan Komputer dan Telekomunikasi','Teknik Jaringan Komputer dan Telekomunikasi','tjkt.png'),
@@ -110,3 +117,5 @@ INSERT INTO siswa (nama_siswa,nis,id_kelas,jk) VALUES
 ('Adit Permana','12345',1,'L'),
 ('Rani Ayu','12346',1,'P'),
 ('Budi Pratama','12347',1,'L');
+
+INSERT INTO admin (username, password) VALUES ('admin', 'NESAS_CEREN');
