@@ -30,7 +30,7 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
       <input name="password" type="password" required style="width:100%;margin:8px 0;padding:10px"><br>
       <button class="btn" type="submit">Masuk</button>
     </form>
-    <p style="margin-top:12px;color:#6b7280">Admin only untuk edit. user: admin password: NESAS_CEREN</p>
+    <p style="margin-top:12px;color:#6b7280">Only admin can edit. user: admin password: NESAS_CEREN</p>
   </div>
 </div>
 <?php include 'assets/templates/footer.php'; ?>
