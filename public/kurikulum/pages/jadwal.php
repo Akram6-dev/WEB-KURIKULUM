@@ -45,12 +45,52 @@ $res=$conn->query('SELECT * FROM jadwal ORDER BY FIELD(hari,"Senin","Selasa","Ra
 <h3><?php echo $editData ? 'Edit Jadwal' : 'Tambah Jadwal'; ?></h3>
 <form method="POST" style="max-width:500px;">
 <?php if($editData): ?><input type="hidden" name="id" value="<?php echo $editData['id_jadwal'];?>"><?php endif; ?>
-<select name="id_kelas" required style="width:100%;padding:8px;margin:5px 0;">
-<option value="">Pilih Kelas</option>
+<div style="position:relative;">
+<input type="text" id="kelasSearch" placeholder="Cari dan pilih kelas..." autocomplete="off" style="width:100%;padding:8px;margin:5px 0;border:1px solid #ddd;border-radius:4px;" value="<?php if($editData && $editData['id_kelas']){ $kelasEdit = $conn->query('SELECT nama_kelas FROM kelas WHERE id_kelas='.$editData['id_kelas'])->fetch_assoc(); echo htmlspecialchars($kelasEdit['nama_kelas'] ?? ''); } ?>">
+<input type="hidden" name="id_kelas" id="kelasValue" value="<?php echo $editData ? $editData['id_kelas'] : '';?>" required>
+<div id="kelasDropdown" style="display:none;position:absolute;width:100%;max-height:200px;overflow-y:auto;background:#fff;border:1px solid #ddd;border-radius:4px;z-index:1000;margin-top:-5px;">
 <?php $kelasOpt->data_seek(0); while($k=$kelasOpt->fetch_assoc()): ?>
-<option value="<?php echo $k['id_kelas'];?>" <?php echo ($editData && $editData['id_kelas']==$k['id_kelas']) ? 'selected' : '';?>><?php echo htmlspecialchars($k['nama_kelas']);?></option>
+<div class="kelas-item" data-id="<?php echo $k['id_kelas'];?>" data-name="<?php echo htmlspecialchars($k['nama_kelas']);?>" style="padding:8px;cursor:pointer;border-bottom:1px solid #f0f0f0;"><?php echo htmlspecialchars($k['nama_kelas']);?></div>
 <?php endwhile; ?>
-</select>
+</div>
+</div>
+<script>
+const kelasSearch = document.getElementById('kelasSearch');
+const kelasValue = document.getElementById('kelasValue');
+const kelasDropdown = document.getElementById('kelasDropdown');
+const kelasItems = document.querySelectorAll('.kelas-item');
+
+kelasSearch.addEventListener('focus', () => {
+  kelasDropdown.style.display = 'block';
+  filterKelas();
+});
+
+kelasSearch.addEventListener('input', filterKelas);
+
+function filterKelas() {
+  const search = kelasSearch.value.toLowerCase();
+  kelasItems.forEach(item => {
+    const name = item.dataset.name.toLowerCase();
+    item.style.display = name.includes(search) ? 'block' : 'none';
+  });
+}
+
+kelasItems.forEach(item => {
+  item.addEventListener('click', () => {
+    kelasSearch.value = item.dataset.name;
+    kelasValue.value = item.dataset.id;
+    kelasDropdown.style.display = 'none';
+  });
+  item.addEventListener('mouseenter', () => item.style.background = '#f0f0f0');
+  item.addEventListener('mouseleave', () => item.style.background = '#fff');
+});
+
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('#kelasSearch') && !e.target.closest('#kelasDropdown')) {
+    kelasDropdown.style.display = 'none';
+  }
+});
+</script>
 <select name="hari" required style="width:100%;padding:8px;margin:5px 0;">
 <option value="">Pilih Hari</option>
 <?php foreach(['Senin','Selasa','Rabu','Kamis','Jumat'] as $h): ?>

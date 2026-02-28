@@ -43,12 +43,27 @@ $res=$conn->query('SELECT m.*,k.nama_kelas FROM materi m LEFT JOIN kelas k ON m.
 <h3><?php echo $editData ? 'Edit Materi' : 'Tambah Materi'; ?></h3>
 <form method="POST" style="max-width:600px;">
 <?php if($editData): ?><input type="hidden" name="id" value="<?php echo $editData['id_materi'];?>"><?php endif; ?>
-<select name="id_kelas" required style="width:100%;padding:8px;margin:5px 0;">
+<input type="text" id="searchKelas" placeholder="Cari Kelas..." style="width:100%;padding:8px;margin:5px 0;border:1px solid #ddd;border-radius:4px;">
+<select name="id_kelas" id="selectKelas" required style="width:100%;padding:8px;margin:5px 0;" size="5">
 <option value="">Pilih Kelas</option>
 <?php $kelasOpt->data_seek(0); while($k=$kelasOpt->fetch_assoc()): ?>
 <option value="<?php echo $k['id_kelas'];?>" <?php echo ($editData && $editData['id_kelas']==$k['id_kelas']) ? 'selected' : '';?>><?php echo htmlspecialchars($k['nama_kelas']);?></option>
 <?php endwhile; ?>
 </select>
+<script>
+const searchInput = document.getElementById('searchKelas');
+const selectKelas = document.getElementById('selectKelas');
+const allOptions = Array.from(selectKelas.options);
+searchInput.addEventListener('input', function() {
+  const search = this.value.toLowerCase();
+  selectKelas.innerHTML = '';
+  allOptions.forEach(opt => {
+    if(opt.text.toLowerCase().includes(search)) {
+      selectKelas.appendChild(opt.cloneNode(true));
+    }
+  });
+});
+</script>
 <input type="text" name="judul" placeholder="Judul Materi" value="<?php echo $editData ? htmlspecialchars($editData['judul']) : '';?>" required style="width:100%;padding:8px;margin:5px 0;">
 <textarea name="deskripsi" placeholder="Deskripsi Materi" required style="width:100%;padding:8px;margin:5px 0;min-height:100px;"><?php echo $editData ? htmlspecialchars($editData['deskripsi']) : '';?></textarea>
 <button type="submit" name="<?php echo $editData ? 'edit' : 'add';?>" class="btn" style="margin-top:10px;"><?php echo $editData ? 'Update' : 'Tambah';?></button>

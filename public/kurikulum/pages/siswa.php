@@ -53,12 +53,52 @@ $res = $conn->query("SELECT s.*,k.nama_kelas FROM siswa s LEFT JOIN kelas k ON s
         <?php if($editData): ?><input type="hidden" name="id" value="<?php echo $editData['id_siswa'];?>"><?php endif; ?>
         <input type="text" name="nama" placeholder="Nama Siswa" value="<?php echo $editData ? htmlspecialchars($editData['nama_siswa']) : '';?>" required style="width:100%;padding:8px;margin:5px 0;">
         <input type="text" name="nis" placeholder="NIS" value="<?php echo $editData ? htmlspecialchars($editData['nis']) : '';?>" required style="width:100%;padding:8px;margin:5px 0;">
-        <select name="id_kelas" required style="width:100%;padding:8px;margin:5px 0;">
-        <option value="">Pilih Kelas</option>
+        <div style="position:relative;">
+        <input type="text" id="kelasSearch" placeholder="Cari dan pilih kelas..." autocomplete="off" style="width:100%;padding:8px;margin:5px 0;border:1px solid #ddd;border-radius:4px;" value="<?php if($editData && $editData['id_kelas']){ $kelasEdit = $conn->query('SELECT nama_kelas FROM kelas WHERE id_kelas='.$editData['id_kelas'])->fetch_assoc(); echo htmlspecialchars($kelasEdit['nama_kelas'] ?? ''); } ?>">
+        <input type="hidden" name="id_kelas" id="kelasValue" value="<?php echo $editData ? $editData['id_kelas'] : '';?>" required>
+        <div id="kelasDropdown" style="display:none;position:absolute;width:100%;max-height:200px;overflow-y:auto;background:#fff;border:1px solid #ddd;border-radius:4px;z-index:1000;margin-top:-5px;">
         <?php $kelas->data_seek(0); while($k=$kelas->fetch_assoc()): ?>
-        <option value="<?php echo $k['id_kelas'];?>" <?php echo ($editData && $editData['id_kelas']==$k['id_kelas']) ? 'selected' : '';?>><?php echo htmlspecialchars($k['nama_kelas']);?></option>
+        <div class="kelas-item" data-id="<?php echo $k['id_kelas'];?>" data-name="<?php echo htmlspecialchars($k['nama_kelas']);?>" style="padding:8px;cursor:pointer;border-bottom:1px solid #f0f0f0;"><?php echo htmlspecialchars($k['nama_kelas']);?></div>
         <?php endwhile; ?>
-        </select>
+        </div>
+        </div>
+        <script>
+        const kelasSearch = document.getElementById('kelasSearch');
+        const kelasValue = document.getElementById('kelasValue');
+        const kelasDropdown = document.getElementById('kelasDropdown');
+        const kelasItems = document.querySelectorAll('.kelas-item');
+        
+        kelasSearch.addEventListener('focus', () => {
+          kelasDropdown.style.display = 'block';
+          filterKelas();
+        });
+        
+        kelasSearch.addEventListener('input', filterKelas);
+        
+        function filterKelas() {
+          const search = kelasSearch.value.toLowerCase();
+          kelasItems.forEach(item => {
+            const name = item.dataset.name.toLowerCase();
+            item.style.display = name.includes(search) ? 'block' : 'none';
+          });
+        }
+        
+        kelasItems.forEach(item => {
+          item.addEventListener('click', () => {
+            kelasSearch.value = item.dataset.name;
+            kelasValue.value = item.dataset.id;
+            kelasDropdown.style.display = 'none';
+          });
+          item.addEventListener('mouseenter', () => item.style.background = '#f0f0f0');
+          item.addEventListener('mouseleave', () => item.style.background = '#fff');
+        });
+        
+        document.addEventListener('click', (e) => {
+          if (!e.target.closest('#kelasSearch') && !e.target.closest('#kelasDropdown')) {
+            kelasDropdown.style.display = 'none';
+          }
+        });
+        </script>
         <select name="jk" required style="width:100%;padding:8px;margin:5px 0;">
         <option value="">Jenis Kelamin</option>
         <option value="L" <?php echo ($editData && $editData['jk']=='L') ? 'selected' : '';?>>Laki-laki</option>
@@ -70,6 +110,9 @@ $res = $conn->query("SELECT s.*,k.nama_kelas FROM siswa s LEFT JOIN kelas k ON s
         </div>
         <?php endif; ?>
         <div class="card">
+            <div style="margin-bottom:15px;">
+                <input type="text" id="searchFilterKelas" placeholder="Cari Kelas..." style="padding:8px;border:1px solid #ddd;border-radius:4px;width:200px;">
+            </div>
             <table class="data-table">
                 <thead>
                     <tr>
@@ -104,5 +147,16 @@ $res = $conn->query("SELECT s.*,k.nama_kelas FROM siswa s LEFT JOIN kelas k ON s
             </table>
         </div>
     </div>
+<script>
+const searchFilter = document.getElementById('searchFilterKelas');
+const tableRows = document.querySelectorAll('.data-table tbody tr');
+searchFilter.addEventListener('input', function() {
+    const search = this.value.toLowerCase();
+    tableRows.forEach(row => {
+        const kelasCell = row.cells[3].textContent.toLowerCase();
+        row.style.display = kelasCell.includes(search) ? '' : 'none';
+    });
+});
+</script>
 </body>
 </html>

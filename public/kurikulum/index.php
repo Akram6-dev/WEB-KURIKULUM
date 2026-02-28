@@ -16,20 +16,30 @@ $programs = $conn->query("SELECT * FROM jurusan ORDER BY id_jurusan");
     <div class="grid-program">
       <?php while($p=$programs->fetch_assoc()): 
         $logoMap = [
+          'PPLG' => 'LOGO RPL.jpeg',
           'RPL' => 'LOGO RPL.jpeg',
-          'PPLG' => 'pplg.png',
-          'TKJ' => 'LOGO TKJ.jpeg',
-          'TJKT' => 'tjkt.png',
-          'AKL' => 'LOGO AKL.jpeg',
-          'DKV' => 'LOGO DKV.jpeg',
-          'MPLB' => 'LOGO MPLB.jpeg',
-          'PEMASARAN' => 'LOGO PEMASARAN.jpeg',
-          'TO' => 'LOGO TEKNIK OTOMATIF.jpeg',
-          'TM' => 'LOGO TEKNIK PEMESINAN.jpeg',
-          'Teknik Logistik' => 'LOGO TEKNIK LOGISTIK.jpeg',
-          'KULINER' => 'LOGO TATA BOGA.jpeg'
+          'TJKT' => 'LogoTKJ.png',
+          'TKJ' => 'LogoTKJ.png',
+          'AKL' => 'LogoAKL.png',
+          'DKV' => 'LogoDKVjpeg.png',
+          'MPLB' => 'LogoMPLB.png',
+          'PEMASARAN' => 'LogoPS.png',
+          'Pemasaran dan Bisnis Daring' => 'LogoPS.png',
+          'TO' => 'LogoTO.png',
+          'Teknik Otomotif' => 'LogoTO.png',
+          'TM' => 'LogoTPM.png',
+          'Teknik Mesin' => 'LogoTPM.png',
+          'TL' => 'LogoTL.png',
+          'Teknik Logistik' => 'LogoTL.png',
+          'KULINER' => 'LogoKULINER.png',
+          'Tata Boga dan Kuliner' => 'LogoKULINER.png',
+          'Pengembangan Perangkat Lunak dan Gim' => 'LogoRPL.png',
+          'Teknik Jaringan Komputer dan Telekomunikasi' => 'LogoTKJ.png',
+          'Akuntansi dan Keuangan Lembaga' => 'LogoAKL.png',
+          'Desain Komunikasi Visual' => 'LogoDKVjpeg.png',
+          'Manajemen Perkantoran dan Layanan Bisnis' => 'LogoMPLB.png'
         ];
-        $logoFile = $logoMap[$p['nama_jurusan']] ?? 'pplg.png';
+        $logoFile = $logoMap[$p['nama_jurusan']] ?? 'Gambar_SMKN_1SUBANG.png';
       ?>
         <div class="prog-card" onclick="window.location.href='pages/detail_jurusan.php?id=<?php echo $p['id_jurusan']; ?>'">
           <img class="prog-logo" src="assets/images/<?php echo htmlspecialchars($logoFile); ?>" alt="<?php echo htmlspecialchars($p['nama_jurusan']); ?>">

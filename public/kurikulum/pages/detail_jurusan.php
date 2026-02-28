@@ -6,16 +6,28 @@ $stmt = $conn->prepare('SELECT * FROM jurusan WHERE id_jurusan = ? LIMIT 1');
 $stmt->bind_param('i',$id); $stmt->execute(); $prog = $stmt->get_result()->fetch_assoc();
 
 $logoMap = [
-  'RPL' => 'LOGO RPL.jpeg',
-  'TKJ' => 'LOGO TKJ.jpeg',
-  'AKL' => 'LOGO AKL.jpeg',
-  'DKV' => 'LOGO DKV.jpeg',
-  'MPLB' => 'LOGO MPLB.jpeg',
-  'PEMASARAN' => 'LOGO PEMASARAN.jpeg',
-  'TO' => 'LOGO TEKNIK OTOMATIF.jpeg',
-  'TM' => 'LOGO TEKNIK PEMESINAN.jpeg',
-  'Teknik Logistik' => 'LOGO TEKNIK LOGISTIK.jpeg',
-  'KULINER' => 'LOGO TATA BOGA.jpeg'
+  'PPLG' => 'LOGO RPL.jpeg',
+          'RPL' => 'LOGO RPL.jpeg',
+          'TJKT' => 'LogoTKJ.png',
+          'TKJ' => 'LogoTKJ.png',
+          'AKL' => 'LogoAKL.png',
+          'DKV' => 'LogoDKVjpeg.png',
+          'MPLB' => 'LogoMPLB.png',
+          'PEMASARAN' => 'LogoPS.png',
+          'Pemasaran dan Bisnis Daring' => 'LogoPS.png',
+          'TO' => 'LogoTO.png',
+          'Teknik Otomotif' => 'LogoTO.png',
+          'TM' => 'LogoTPM.png',
+          'Teknik Mesin' => 'LogoTPM.png',
+          'TL' => 'LogoTL.png',
+          'Teknik Logistik' => 'LogoTL.png',
+          'KULINER' => 'LogoKULINER.png',
+          'Tata Boga dan Kuliner' => 'LogoKULINER.png',
+          'Pengembangan Perangkat Lunak dan Gim' => 'LogoRPL.png',
+          'Teknik Jaringan Komputer dan Telekomunikasi' => 'LogoTKJ.png',
+          'Akuntansi dan Keuangan Lembaga' => 'LogoAKL.png',
+          'Desain Komunikasi Visual' => 'LogoDKVjpeg.png',
+          'Manajemen Perkantoran dan Layanan Bisnis' => 'LogoMPLB.png'
 ];
 $logoFile = $prog ? ($logoMap[$prog['nama_jurusan']] ?? 'pplg.png') : 'pplg.png';
 ?>
