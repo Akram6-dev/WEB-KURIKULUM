@@ -13,6 +13,117 @@ class KurikulumController extends Controller
         return view('kurikulum.index', compact('programs'));
     }
     
+    public function jurusanDetail($id)
+    {
+        $jurusan = DB::table('jurusan')->where('id_jurusan', $id)->first();
+        $tingkat = request('tingkat');
+        $kelasList = [];
+        
+        if ($tingkat) {
+            $kelasList = DB::table('kelas')
+                ->where('id_jurusan', $id)
+                ->where('tingkat', $tingkat)
+                ->orderBy('nama_kelas')
+                ->get();
+        }
+        
+        return view('kurikulum.jurusan_detail', compact('jurusan', 'tingkat', 'kelasList'));
+    }
+    
+    public function kelasDetail($id)
+    {
+        $kelas = DB::table('kelas as k')
+            ->leftJoin('jurusan as j', 'k.id_jurusan', '=', 'j.id_jurusan')
+            ->select('k.*', 'j.nama_jurusan')
+            ->where('k.id_kelas', $id)
+            ->first();
+        
+        $siswa = DB::table('siswa')->where('id_kelas', $id)->get();
+        
+        return view('kurikulum.kelas_detail', compact('kelas', 'siswa'));
+    }
+    
+    public function absensiIndex()
+    {
+        $canEdit = session('admin') ? true : false;
+        $kelas = DB::table('kelas')->orderBy('nama_kelas')->get();
+        
+        $query = DB::table('absensi as a')
+            ->leftJoin('kelas as k', 'a.id_kelas', '=', 'k.id_kelas')
+            ->select('a.*', 'k.nama_kelas');
+        
+        if (request('kelas')) {
+            $query->where('a.id_kelas', request('kelas'));
+        }
+        if (request('tgl')) {
+            $query->where('a.tanggal', request('tgl'));
+        }
+        
+        $absensi = $query->orderBy('a.tanggal', 'desc')->orderBy('a.nama')->get();
+        $editData = null;
+        
+        return view('kurikulum.absensi', compact('canEdit', 'kelas', 'absensi', 'editData'));
+    }
+    
+    public function absensiEdit($id)
+    {
+        $canEdit = session('admin') ? true : false;
+        $kelas = DB::table('kelas')->orderBy('nama_kelas')->get();
+        
+        $query = DB::table('absensi as a')
+            ->leftJoin('kelas as k', 'a.id_kelas', '=', 'k.id_kelas')
+            ->select('a.*', 'k.nama_kelas');
+        
+        if (request('kelas')) {
+            $query->where('a.id_kelas', request('kelas'));
+        }
+        if (request('tgl')) {
+            $query->where('a.tanggal', request('tgl'));
+        }
+        
+        $absensi = $query->orderBy('a.tanggal', 'desc')->orderBy('a.nama')->get();
+        $editData = DB::table('absensi')->where('id_absen', $id)->first();
+        
+        return view('kurikulum.absensi', compact('canEdit', 'kelas', 'absensi', 'editData'));
+    }
+    
+    public function absensiStore(Request $request)
+    {
+        if (!session('admin')) abort(403);
+        
+        DB::table('absensi')->insert([
+            'id_kelas' => $request->id_kelas,
+            'tanggal' => $request->tanggal,
+            'nama' => $request->nama,
+            'status' => $request->status
+        ]);
+        
+        return redirect()->route('kurikulum.absensi.index');
+    }
+    
+    public function absensiUpdate(Request $request, $id)
+    {
+        if (!session('admin')) abort(403);
+        
+        DB::table('absensi')->where('id_absen', $id)->update([
+            'id_kelas' => $request->id_kelas,
+            'tanggal' => $request->tanggal,
+            'nama' => $request->nama,
+            'status' => $request->status
+        ]);
+        
+        return redirect()->route('kurikulum.absensi.index');
+    }
+    
+    public function absensiDestroy($id)
+    {
+        if (!session('admin')) abort(403);
+        
+        DB::table('absensi')->where('id_absen', $id)->delete();
+        
+        return redirect()->route('kurikulum.absensi.index');
+    }
+    
     public function siswaIndex()
     {
         $canEdit = session('admin') ? true : false;

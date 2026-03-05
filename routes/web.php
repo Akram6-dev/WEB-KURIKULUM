@@ -5,6 +5,15 @@ use App\Http\Controllers\KurikulumController;
 
 Route::get('/', [KurikulumController::class, 'index'])->name('kurikulum.index');
 Route::get('/kurikulum', [KurikulumController::class, 'index'])->name('kurikulum.home');
+Route::get('/jurusan/{id}', [KurikulumController::class, 'jurusanDetail'])->name('kurikulum.jurusan.detail');
+Route::get('/kelas/{id}', [KurikulumController::class, 'kelasDetail'])->name('kurikulum.kelas.detail');
+
+// Absensi Routes
+Route::get('/absensi', [KurikulumController::class, 'absensiIndex'])->name('kurikulum.absensi.index');
+Route::get('/absensi/{id}/edit', [KurikulumController::class, 'absensiEdit'])->name('kurikulum.absensi.edit');
+Route::post('/absensi', [KurikulumController::class, 'absensiStore'])->name('kurikulum.absensi.store');
+Route::put('/absensi/{id}', [KurikulumController::class, 'absensiUpdate'])->name('kurikulum.absensi.update');
+Route::delete('/absensi/{id}', [KurikulumController::class, 'absensiDestroy'])->name('kurikulum.absensi.destroy');
 
 // Siswa Routes
 Route::get('/siswa', [KurikulumController::class, 'siswaIndex'])->name('kurikulum.siswa.index');
