@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Detail Kelas - {{ $kelas->nama_kelas ?? 'Tidak Ditemukan' }}</title>
-    <link rel="stylesheet" href="{{ asset('kurikulum/assets/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/kurikulum.css') }}">
 </head>
 <body>
 @include('kurikulum.partials.topbar')
@@ -32,7 +32,7 @@
         @endphp
         
         <div class="jurusan-header card">
-            <img src="{{ asset('kurikulum/assets/images/' . $logoFile) }}" alt="{{ $kelas->nama_jurusan }}">
+            <img src="{{ asset('images/' . $logoFile) }}" alt="{{ $kelas->nama_jurusan }}">
             <h1>{{ $kelas->nama_kelas }} — {{ $kelas->nama_jurusan }}</h1>
             <p>Wali Kelas: {{ $kelas->wali_kelas ?: '-' }}</p>
             <p>Jumlah Siswa: {{ $kelas->jumlah_siswa }} (L: {{ $kelas->laki }} / P: {{ $kelas->perempuan }})</p>

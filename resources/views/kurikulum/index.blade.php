@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>SMKN 1 Subang - Kurikulum</title>
-    <link rel="stylesheet" href="{{ asset('kurikulum/assets/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/kurikulum.css') }}">
 </head>
 <body>
 @include('kurikulum.partials.topbar')
@@ -21,8 +21,8 @@
             @foreach($programs as $p)
                 @php
                     $logoMap = [
-                        'PPLG' => 'LogoRPL.png',
-                        'RPL' => 'LogoRPL.png',
+                        'PPLG' => 'LOGO RPL.jpeg',
+                        'RPL' => 'LOGO RPL.jpeg',
                         'TJKT' => 'LogoTKJ.png',
                         'TKJ' => 'LogoTKJ.png',
                         'AKL' => 'LogoAKL.png',
@@ -38,7 +38,7 @@
                         'Teknik Logistik' => 'LogoTL.png',
                         'KULINER' => 'LogoKULINER.png',
                         'Tata Boga dan Kuliner' => 'LogoKULINER.png',
-                        'Pengembangan Perangkat Lunak dan Gim' => 'LogoRPL.png',
+                        'Pengembangan Perangkat Lunak dan Gim' => 'LOGO RPL.jpeg',
                         'Teknik Jaringan Komputer dan Telekomunikasi' => 'LogoTKJ.png',
                         'Akuntansi dan Keuangan Lembaga' => 'LogoAKL.png',
                         'Desain Komunikasi Visual' => 'LogoDKVjpeg.png',
@@ -48,7 +48,7 @@
                 @endphp
                 
                 <div class="prog-card" onclick="window.location.href='{{ route('kurikulum.jurusan.detail', $p->id_jurusan) }}'">
-                    <img class="prog-logo" src="{{ asset('kurikulum/assets/images/' . $logoFile) }}" alt="{{ $p->nama_jurusan }}">
+                    <img class="prog-logo" src="{{ asset('images/' . $logoFile) }}" alt="{{ $p->nama_jurusan }}">
                     <h3>{{ $p->nama_jurusan }}</h3>
                     <p style="font-size:13px;color:#64748b;margin:8px 0;">{{ $p->deskripsi }}</p>
                 </div>

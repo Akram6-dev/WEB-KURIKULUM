@@ -1,6 +1,6 @@
 <header class="sidebar" id="sidebar">
   <div class="logo" onclick="toggleSidebar()">
-    <img src="{{ asset('kurikulum/assets/images/Gambar_SMKN_1SUBANG.png') }}" alt="SMKN 1 Subang" id="logoImg">
+    <img src="{{ asset('images/Gambar_SMKN_1SUBANG.png') }}" alt="SMKN 1 Subang" id="logoImg">
   </div>
   <ul id="menuList">
     <li><a href="{{ route('kurikulum.index') }}">Beranda</a></li>
