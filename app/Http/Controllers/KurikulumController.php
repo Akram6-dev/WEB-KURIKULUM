@@ -391,6 +391,43 @@ class KurikulumController extends Controller
         return redirect()->route('kurikulum.guru.index');
     }
     
+    public function kelasIndex()
+    {
+        $canEdit = session('admin') ? true : false;
+        $guru = DB::table('guru')->orderBy('nama_guru')->get();
+        $kelas = DB::table('kelas as k')
+            ->leftJoin('jurusan as j', 'k.id_jurusan', '=', 'j.id_jurusan')
+            ->select('k.*', 'j.nama_jurusan')
+            ->orderBy('k.tingkat')
+            ->orderBy('k.nama_kelas')
+            ->get();
+        $editData = null;
+        return view('kurikulum.wali_kelas', compact('canEdit', 'guru', 'kelas', 'editData'));
+    }
+
+    public function kelasEdit($id)
+    {
+        $canEdit = session('admin') ? true : false;
+        $guru = DB::table('guru')->orderBy('nama_guru')->get();
+        $kelas = DB::table('kelas as k')
+            ->leftJoin('jurusan as j', 'k.id_jurusan', '=', 'j.id_jurusan')
+            ->select('k.*', 'j.nama_jurusan')
+            ->orderBy('k.tingkat')
+            ->orderBy('k.nama_kelas')
+            ->get();
+        $editData = DB::table('kelas')->where('id_kelas', $id)->first();
+        return view('kurikulum.wali_kelas', compact('canEdit', 'guru', 'kelas', 'editData'));
+    }
+
+    public function kelasUpdate(Request $request, $id)
+    {
+        if (!session('admin')) abort(403);
+        DB::table('kelas')->where('id_kelas', $id)->update([
+            'wali_kelas' => $request->wali_kelas
+        ]);
+        return redirect()->route('kurikulum.kelas.index');
+    }
+
     public function loginForm()
     {
         return view('kurikulum.login', ['error' => '']);

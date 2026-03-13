@@ -43,6 +43,11 @@ Route::post('/guru', [KurikulumController::class, 'guruStore'])->name('kurikulum
 Route::put('/guru/{id}', [KurikulumController::class, 'guruUpdate'])->name('kurikulum.guru.update');
 Route::delete('/guru/{id}', [KurikulumController::class, 'guruDestroy'])->name('kurikulum.guru.destroy');
 
+// Wali Kelas Routes
+Route::get('/wali-kelas', [KurikulumController::class, 'kelasIndex'])->name('kurikulum.kelas.index');
+Route::get('/wali-kelas/{id}/edit', [KurikulumController::class, 'kelasEdit'])->name('kurikulum.kelas.edit');
+Route::put('/wali-kelas/{id}', [KurikulumController::class, 'kelasUpdate'])->name('kurikulum.kelas.update');
+
 // Auth Routes
 Route::get('/login', [KurikulumController::class, 'loginForm'])->name('kurikulum.login');
 Route::post('/login', [KurikulumController::class, 'loginPost'])->name('kurikulum.login.post');

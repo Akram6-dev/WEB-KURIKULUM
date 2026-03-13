@@ -54,7 +54,7 @@
             <thead>
                 <tr>
                     <th>No</th>
-                    <th>Nama Siswa</th>
+                    <th>Nama Siswa</th>z
                     <th>NIS</th>
                     <th>Kelas</th>
                     <th>JK</th>

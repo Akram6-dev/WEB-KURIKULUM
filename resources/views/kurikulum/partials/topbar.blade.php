@@ -7,6 +7,7 @@
     <li><a href="{{ route('kurikulum.guru.index') }}">Data Guru</a></li>
     <li><a href="{{ route('kurikulum.siswa.index') }}">Data Siswa</a></li>
     <li><a href="{{ route('kurikulum.jadwal.index') }}">Jadwal</a></li>
+    <li><a href="{{ route('kurikulum.kelas.index') }}">Wali Kelas</a></li>
     <li style="margin-top:12px;">
     @if(session('admin'))
       <a class="btn" href="{{ route('kurikulum.logout') }}" style="background:#ef4444;">Logout</a>

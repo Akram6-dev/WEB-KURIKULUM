@@ -315,7 +315,10 @@ textarea:focus {
 
     .main-content {
         margin-left: 0;
-        padding: 16px
+        padding: 16;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     .main-content.sidebar-closed {
@@ -323,6 +326,100 @@ textarea:focus {
     }
 
     .container {
-        padding: 16px
+        padding: 20px
     }
+}
+
+/* ================= LOGIN SPLIT ================= */
+
+.login-wrapper {
+    display: flex;
+    min-height: 500px;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 5px 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.login-left {
+    flex: 1;
+    background: linear-gradient(135deg,
+            var(--primary),
+            var(--primary-dark));
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    text-align: center;
+}
+
+.login-right {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f8fafc;
+    padding: 40px;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 360px;
+}
+
+.login-card button {
+    margin-top: 16px;
+    width: 100%;
+}
+
+/* ================= LOGIN FORM IMPROVEMENT ================= */
+
+.login-heading {
+    text-align: center;
+    font-weight: 800;
+    font-size: 26px;
+    margin-bottom: 24px;
+}
+
+/* Supaya label dan input menyatu */
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #334155;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    font-size: 14px;
+}
+
+/* Tombol biru rounded modern */
+.btn-login {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    border-radius: 25px;
+    /* lebih rounded */
+    border: none;
+    background: var(--primary);
+    color: #fff;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-login:hover {
+    background: var(--primary-dark);
+    transform: translateY(-1px);
 }
