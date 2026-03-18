@@ -270,74 +270,7 @@ class KurikulumController extends Controller
         return redirect()->route('kurikulum.jadwal.index');
     }
     
-    public function materiIndex()
-    {
-        $canEdit = session('admin') ? true : false;
-        $kelas = DB::table('kelas')->orderBy('nama_kelas')->get();
-        $materi = DB::table('materi as m')
-            ->leftJoin('kelas as k', 'm.id_kelas', '=', 'k.id_kelas')
-            ->select('m.*', 'k.nama_kelas')
-            ->orderBy('m.tanggal_upload', 'desc')
-            ->get();
-        $editData = null;
-        
-        return view('kurikulum.materi', compact('canEdit', 'kelas', 'materi', 'editData'));
-    }
-    
-    public function materiEdit($id)
-    {
-        $canEdit = session('admin') ? true : false;
-        $kelas = DB::table('kelas')->orderBy('nama_kelas')->get();
-        $materi = DB::table('materi as m')
-            ->leftJoin('kelas as k', 'm.id_kelas', '=', 'k.id_kelas')
-            ->select('m.*', 'k.nama_kelas')
-            ->orderBy('m.tanggal_upload', 'desc')
-            ->get();
-        $editData = DB::table('materi as m')
-            ->leftJoin('kelas as k', 'm.id_kelas', '=', 'k.id_kelas')
-            ->select('m.*', 'k.nama_kelas as kelas_nama')
-            ->where('m.id_materi', $id)
-            ->first();
-        
-        return view('kurikulum.materi', compact('canEdit', 'kelas', 'materi', 'editData'));
-    }
-    
-    public function materiStore(Request $request)
-    {
-        if (!session('admin')) abort(403);
-        
-        DB::table('materi')->insert([
-            'id_kelas' => $request->id_kelas,
-            'judul' => $request->judul,
-            'deskripsi' => $request->deskripsi,
-            'tanggal_upload' => date('Y-m-d')
-        ]);
-        
-        return redirect()->route('kurikulum.materi.index');
-    }
-    
-    public function materiUpdate(Request $request, $id)
-    {
-        if (!session('admin')) abort(403);
-        
-        DB::table('materi')->where('id_materi', $id)->update([
-            'id_kelas' => $request->id_kelas,
-            'judul' => $request->judul,
-            'deskripsi' => $request->deskripsi
-        ]);
-        
-        return redirect()->route('kurikulum.materi.index');
-    }
-    
-    public function materiDestroy($id)
-    {
-        if (!session('admin')) abort(403);
-        
-        DB::table('materi')->where('id_materi', $id)->delete();
-        
-        return redirect()->route('kurikulum.materi.index');
-    }
-    
+
     public function guruIndex()
     {
         $canEdit = session('admin') ? true : false;
@@ -401,6 +334,17 @@ class KurikulumController extends Controller
             ->orderBy('k.tingkat')
             ->orderBy('k.nama_kelas')
             ->get();
+
+        $acakan = session('wali_kelas_acak');
+        if ($acakan) {
+            $kelas = $kelas->map(function ($k) use ($acakan) {
+                if (isset($acakan[$k->id_kelas])) {
+                    $k->wali_kelas = $acakan[$k->id_kelas];
+                }
+                return $k;
+            });
+        }
+
         $editData = null;
         return view('kurikulum.wali_kelas', compact('canEdit', 'guru', 'kelas', 'editData'));
     }
@@ -425,6 +369,35 @@ class KurikulumController extends Controller
         DB::table('kelas')->where('id_kelas', $id)->update([
             'wali_kelas' => $request->wali_kelas
         ]);
+        return redirect()->route('kurikulum.kelas.index');
+    }
+
+    public function kelasAcak()
+    {
+        if (!session('admin')) abort(403);
+
+        $kelasList = DB::table('kelas')->orderBy('tingkat')->orderBy('nama_kelas')->get(['id_kelas', 'wali_kelas']);
+
+        $guruList = $kelasList->pluck('wali_kelas')->filter()->values()->toArray();
+        if (empty($guruList)) {
+            return redirect()->route('kurikulum.kelas.index')->with('error', 'Belum ada data wali kelas.');
+        }
+
+        shuffle($guruList);
+
+        $acakan = [];
+        foreach ($kelasList as $i => $k) {
+            $acakan[$k->id_kelas] = $guruList[$i % count($guruList)];
+        }
+
+        session(['wali_kelas_acak' => $acakan]);
+        return redirect()->route('kurikulum.kelas.index');
+    }
+
+    public function kelasReset()
+    {
+        if (!session('admin')) abort(403);
+        session()->forget('wali_kelas_acak');
         return redirect()->route('kurikulum.kelas.index');
     }
 

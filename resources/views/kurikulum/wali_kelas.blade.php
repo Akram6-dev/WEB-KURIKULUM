@@ -48,6 +48,33 @@
     <div class="card">
         <h2>Daftar Wali Kelas</h2>
 
+        @if(session('error'))
+        <div style="background:#fee2e2;color:#dc2626;padding:10px 14px;border-radius:6px;margin-bottom:16px">
+            {{ session('error') }}
+        </div>
+        @endif
+
+        {{-- Search & Tombol Acak/Reset --}}
+        <div style="margin-bottom:16px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between">
+            <input type="text" id="searchInput" placeholder="Cari kelas atau wali kelas..." oninput="filterTable()"
+                style="padding:8px 12px;border:1px solid #cbd5e1;border-radius:6px;min-width:240px;font-size:14px">
+
+            @if($canEdit)
+            <div style="display:flex;gap:8px">
+                <form method="POST" action="{{ route('kurikulum.kelas.acak') }}" onsubmit="return confirm('Acak semua wali kelas?')">
+                    @csrf
+                    <button type="submit" class="btn" style="background:#f59e0b;border-color:#f59e0b">🔀 Acak Wali Kelas</button>
+                </form>
+                @if(session('wali_kelas_acak'))
+                <form method="POST" action="{{ route('kurikulum.kelas.reset') }}" onsubmit="return confirm('Kembalikan wali kelas ke data semula?')">
+                    @csrf
+                    <button type="submit" class="btn" style="background:#6b7280;border-color:#6b7280">↩ Kembalikan Semula</button>
+                </form>
+                @endif
+            </div>
+            @endif
+        </div>
+
         {{-- Filter by tingkat --}}
         <div style="margin-bottom:16px;display:flex;gap:8px;flex-wrap:wrap">
             <a href="{{ route('kurikulum.kelas.index') }}"
@@ -60,7 +87,7 @@
                class="{{ request('tingkat')=='12' ? 'btn' : 'btn-outline' }}" style="padding:8px 16px">Kelas XII</a>
         </div>
 
-        <table class="data-table">
+        <table class="data-table" id="kelasTable">
             <thead>
                 <tr>
                     <th>No</th>
@@ -99,6 +126,15 @@
         </table>
     </div>
 </div>
+
+<script>
+function filterTable() {
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    document.querySelectorAll('#kelasTable tbody tr').forEach(row => {
+        row.style.display = row.innerText.toLowerCase().includes(q) ? '' : 'none';
+    });
+}
+</script>
 
 @include('kurikulum.partials.footer')
 </body>

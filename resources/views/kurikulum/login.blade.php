@@ -137,7 +137,7 @@
     <div class="login-area">
         <div class="login-card">
             <div class="logo">
-                <img src="{{ asset('kurikulum/assets/images/logo_smkn1.png') }}" alt="SMKN 1 Subang">
+                <img src="{{ asset('images/Gambar_SMKN_1SUBANG.png') }}" alt="SMKN 1 Subang">
             </div>
             <h1>Admin Login</h1>
             <p class="subtitle">Sistem Informasi Kurikulum SMKN 1 Subang</p>
