@@ -48,7 +48,7 @@ Route::get('/login', [KurikulumController::class, 'loginForm'])->name('kurikulum
 Route::post('/login', [KurikulumController::class, 'loginPost'])->name('kurikulum.login.post');
 Route::get('/logout', [KurikulumController::class, 'logout'])->name('kurikulum.logout');
 
-// Fallback ke PHP native untuk halaman lain
-Route::get('/{any}', function () {
-    return redirect('/kurikulum/index.php');
-})->where('any', '.*');
+// Redirect old URL
+Route::get('/kurikulum/index.php', function () {
+    return redirect('/kurikulum');
+});
