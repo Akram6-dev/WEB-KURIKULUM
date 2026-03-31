@@ -51,7 +51,7 @@
     
     <div class="card">
         <div style="margin-bottom:15px;">
-            <a href="/kurikulum/pages/jadwal_pdf.php" target="_blank" class="btn" style="background:#3b82f6;">📄 Export ke PDF</a>
+            <a href="/kurikulum/pages/jadwal_pdf.php" target="_blank" class="btn" style="background:#3b82f6;">Export ke PDF</a>
         </div>
         <table class="data-table">
             <thead>

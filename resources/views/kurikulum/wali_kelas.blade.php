@@ -63,7 +63,7 @@
             <div style="display:flex;gap:8px">
                 <form method="POST" action="{{ route('kurikulum.kelas.acak') }}" onsubmit="return confirm('Acak semua wali kelas?')">
                     @csrf
-                    <button type="submit" class="btn" style="background:#f59e0b;border-color:#f59e0b">🔀 Acak Wali Kelas</button>
+                    <button type="submit" class="btn" style="background:#f59e0b;border-color:#f59e0b">Acak Wali Kelas</button>
                 </form>
                 @if(session('wali_kelas_acak'))
                 <form method="POST" action="{{ route('kurikulum.kelas.reset') }}" onsubmit="return confirm('Kembalikan wali kelas ke data semula?')">

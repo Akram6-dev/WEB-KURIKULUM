@@ -36,6 +36,13 @@ Route::post('/guru', [KurikulumController::class, 'guruStore'])->name('kurikulum
 Route::put('/guru/{id}', [KurikulumController::class, 'guruUpdate'])->name('kurikulum.guru.update');
 Route::delete('/guru/{id}', [KurikulumController::class, 'guruDestroy'])->name('kurikulum.guru.destroy');
 
+// Materi Routes
+Route::get('/materi', [KurikulumController::class, 'materiIndex'])->name('kurikulum.materi.index');
+Route::get('/materi/{id}/edit', [KurikulumController::class, 'materiEdit'])->name('kurikulum.materi.edit');
+Route::post('/materi', [KurikulumController::class, 'materiStore'])->name('kurikulum.materi.store');
+Route::put('/materi/{id}', [KurikulumController::class, 'materiUpdate'])->name('kurikulum.materi.update');
+Route::delete('/materi/{id}', [KurikulumController::class, 'materiDestroy'])->name('kurikulum.materi.destroy');
+
 // Wali Kelas Routes
 Route::get('/wali-kelas', [KurikulumController::class, 'kelasIndex'])->name('kurikulum.kelas.index');
 Route::get('/wali-kelas/{id}/edit', [KurikulumController::class, 'kelasEdit'])->name('kurikulum.kelas.edit');
