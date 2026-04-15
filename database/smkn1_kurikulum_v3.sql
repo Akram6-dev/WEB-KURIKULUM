@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 04 Mar 2026 pada 04.00
--- Versi server: 10.4.28-MariaDB
--- Versi PHP: 8.2.4
+-- Generation Time: Apr 15, 2026 at 06:12 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,21 +24,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `absensi`
---
-
-CREATE TABLE `absensi` (
-  `id_absen` int(11) NOT NULL,
-  `id_kelas` int(11) DEFAULT NULL,
-  `tanggal` date NOT NULL,
-  `nama` varchar(100) NOT NULL,
-  `status` enum('Hadir','Izin','Sakit','Alpa') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `admin`
+-- Table structure for table `admin`
 --
 
 CREATE TABLE `admin` (
@@ -49,16 +35,16 @@ CREATE TABLE `admin` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `admin`
+-- Dumping data for table `admin`
 --
 
 INSERT INTO `admin` (`id_admin`, `username`, `password`, `created_at`) VALUES
-(1, 'admin', 'NESAS_CEREN', '2026-02-25 07:56:28');
+(1, 'admin', 'NESAS_BERAKSI', '2026-02-25 07:56:28');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `cache`
+-- Table structure for table `cache`
 --
 
 CREATE TABLE `cache` (
@@ -70,7 +56,7 @@ CREATE TABLE `cache` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `cache_locks`
+-- Table structure for table `cache_locks`
 --
 
 CREATE TABLE `cache_locks` (
@@ -82,7 +68,7 @@ CREATE TABLE `cache_locks` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `failed_jobs`
+-- Table structure for table `failed_jobs`
 --
 
 CREATE TABLE `failed_jobs` (
@@ -98,7 +84,7 @@ CREATE TABLE `failed_jobs` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `guru`
+-- Table structure for table `guru`
 --
 
 CREATE TABLE `guru` (
@@ -108,10 +94,17 @@ CREATE TABLE `guru` (
   `mapel` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `guru`
+--
+
+INSERT INTO `guru` (`id_guru`, `nama_guru`, `nip`, `mapel`) VALUES
+(3, 'Pa Asep Komara', '123456', 'Matematika');
+
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `jadwal`
+-- Table structure for table `jadwal`
 --
 
 CREATE TABLE `jadwal` (
@@ -126,16 +119,16 @@ CREATE TABLE `jadwal` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `jadwal`
+-- Dumping data for table `jadwal`
 --
 
 INSERT INTO `jadwal` (`id_jadwal`, `id_kelas`, `hari`, `jam_mulai`, `jam_selesai`, `mapel`, `guru_pengampu`, `kelas`) VALUES
-(1, 6, 'Senin', '18:25:00', '17:24:00', 'lonte', 'askom', 'X AKL 3');
+(1, 101, 'Senin', '18:25:00', '17:24:00', 'Matematika', 'Pa Asep Komara', 'X AKL 1');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `jobs`
+-- Table structure for table `jobs`
 --
 
 CREATE TABLE `jobs` (
@@ -151,7 +144,7 @@ CREATE TABLE `jobs` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `job_batches`
+-- Table structure for table `job_batches`
 --
 
 CREATE TABLE `job_batches` (
@@ -170,7 +163,7 @@ CREATE TABLE `job_batches` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `jurusan`
+-- Table structure for table `jurusan`
 --
 
 CREATE TABLE `jurusan` (
@@ -182,7 +175,7 @@ CREATE TABLE `jurusan` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `jurusan`
+-- Dumping data for table `jurusan`
 --
 
 INSERT INTO `jurusan` (`id_jurusan`, `nama_jurusan`, `keterangan`, `deskripsi`, `logo`) VALUES
@@ -200,7 +193,7 @@ INSERT INTO `jurusan` (`id_jurusan`, `nama_jurusan`, `keterangan`, `deskripsi`, 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `kelas`
+-- Table structure for table `kelas`
 --
 
 CREATE TABLE `kelas` (
@@ -215,7 +208,7 @@ CREATE TABLE `kelas` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `kelas`
+-- Dumping data for table `kelas`
 --
 
 INSERT INTO `kelas` (`id_kelas`, `nama_kelas`, `tingkat`, `id_jurusan`, `wali_kelas`, `jumlah_siswa`, `laki`, `perempuan`) VALUES
@@ -295,7 +288,45 @@ INSERT INTO `kelas` (`id_kelas`, `nama_kelas`, `tingkat`, `id_jurusan`, `wali_ke
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `materi`
+-- Table structure for table `mata_pelajaran`
+--
+
+CREATE TABLE `mata_pelajaran` (
+  `id_mapel` int(11) NOT NULL,
+  `nama_mapel` varchar(255) NOT NULL,
+  `kategori` enum('Umum','Produktif') DEFAULT 'Umum'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `mata_pelajaran`
+--
+
+INSERT INTO `mata_pelajaran` (`id_mapel`, `nama_mapel`, `kategori`) VALUES
+(1, 'Pendidikan Agama dan Budi Pekerti', 'Umum'),
+(2, 'Pendidikan Pancasila dan Kewarganegaraan (PPKn)', 'Umum'),
+(3, 'Bahasa Indonesia', 'Umum'),
+(4, 'Bahasa Inggris', 'Umum'),
+(5, 'Bahasa Jepang', 'Umum'),
+(6, 'Matematika', 'Umum'),
+(7, 'Sejarah Indonesia', 'Umum'),
+(8, 'Pendidikan Jasmani, Olahraga, dan Kesehatan (PJOK)', 'Umum'),
+(9, 'Seni Budaya', 'Umum'),
+(10, 'Prakarya dan Kewirausahaan (PKWU)', 'Umum'),
+(11, 'Produktif RPL', 'Produktif'),
+(12, 'Produktif TKJ', 'Produktif'),
+(13, 'Produktif DKV', 'Produktif'),
+(14, 'Produktif TO', 'Produktif'),
+(15, 'Produktif TM', 'Produktif'),
+(16, 'Produktif KULINER', 'Produktif'),
+(17, 'Produktif AKL', 'Produktif'),
+(18, 'Produktif MPLB', 'Produktif'),
+(19, 'Produktif PEMASARAN', 'Produktif'),
+(20, 'Produktif TEKNIK LOGISTIK', 'Produktif');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `materi`
 --
 
 CREATE TABLE `materi` (
@@ -309,7 +340,7 @@ CREATE TABLE `materi` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `migrations`
+-- Table structure for table `migrations`
 --
 
 CREATE TABLE `migrations` (
@@ -319,7 +350,7 @@ CREATE TABLE `migrations` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data untuk tabel `migrations`
+-- Dumping data for table `migrations`
 --
 
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
@@ -330,7 +361,7 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `password_reset_tokens`
+-- Table structure for table `password_reset_tokens`
 --
 
 CREATE TABLE `password_reset_tokens` (
@@ -342,7 +373,7 @@ CREATE TABLE `password_reset_tokens` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `sessions`
+-- Table structure for table `sessions`
 --
 
 CREATE TABLE `sessions` (
@@ -355,16 +386,17 @@ CREATE TABLE `sessions` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data untuk tabel `sessions`
+-- Dumping data for table `sessions`
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('KV26bBDLgWmedUhcnTYlZzGJ1ZA5gBifoXWxOCZT', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiRFFJVXlNZlpNNTBjYTJHWlpJbjZ2aHloUG1MWFpIRFFOSVVjR3FqciI7czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7czo1OiJyb3V0ZSI7czoxNToia3VyaWt1bHVtLmluZGV4Ijt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1OiJhZG1pbiI7czo1OiJhZG1pbiI7fQ==', 1772261870);
+('6nob8o2FVtr20uvyZ2EUPY4I0S9Mv8H0T7x4Kg2C', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36 Edg/146.0.0.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiQlZLNkZrZjNsUkZWNGNwNjFCcTRnMzNIdGFpbE5ZV2J1QmFMQWlzVyI7czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MjY6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9ndXJ1IjtzOjU6InJvdXRlIjtzOjIwOiJrdXJpa3VsdW0uZ3VydS5pbmRleCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NToiYWRtaW4iO3M6NToiYWRtaW4iO30=', 1774962192),
+('ODDlhUMi5LiLJPqYZOeRanIB93ur74Zj9iqcXPKL', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 Edg/147.0.0.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiY1hkNmdjMTJwOHhndFB4UER0MGI1eGtnak1NSkU0b3lqTVZoTkF0ZiI7czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6Mjc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9sb2dpbiI7czo1OiJyb3V0ZSI7czoxNToia3VyaWt1bHVtLmxvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1776226291);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `siswa`
+-- Table structure for table `siswa`
 --
 
 CREATE TABLE `siswa` (
@@ -377,17 +409,16 @@ CREATE TABLE `siswa` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `siswa`
+-- Dumping data for table `siswa`
 --
 
 INSERT INTO `siswa` (`id_siswa`, `nama_siswa`, `nis`, `id_kelas`, `jk`, `foto`) VALUES
-(1, 'Muhammad Alfa Mafaza', '123456', 10, 'P', NULL),
-(2, 'asep.sql', '67676767676767676767', 122, 'P', NULL);
+(2, 'Muhammad Alfa Mafaza', '123456', 92, 'L', NULL);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `users`
+-- Table structure for table `users`
 --
 
 CREATE TABLE `users` (
@@ -406,98 +437,98 @@ CREATE TABLE `users` (
 --
 
 --
--- Indeks untuk tabel `absensi`
---
-ALTER TABLE `absensi`
-  ADD PRIMARY KEY (`id_absen`);
-
---
--- Indeks untuk tabel `admin`
+-- Indexes for table `admin`
 --
 ALTER TABLE `admin`
   ADD PRIMARY KEY (`id_admin`),
   ADD UNIQUE KEY `username` (`username`);
 
 --
--- Indeks untuk tabel `cache`
+-- Indexes for table `cache`
 --
 ALTER TABLE `cache`
   ADD PRIMARY KEY (`key`),
   ADD KEY `cache_expiration_index` (`expiration`);
 
 --
--- Indeks untuk tabel `cache_locks`
+-- Indexes for table `cache_locks`
 --
 ALTER TABLE `cache_locks`
   ADD PRIMARY KEY (`key`),
   ADD KEY `cache_locks_expiration_index` (`expiration`);
 
 --
--- Indeks untuk tabel `failed_jobs`
+-- Indexes for table `failed_jobs`
 --
 ALTER TABLE `failed_jobs`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`);
 
 --
--- Indeks untuk tabel `guru`
+-- Indexes for table `guru`
 --
 ALTER TABLE `guru`
   ADD PRIMARY KEY (`id_guru`);
 
 --
--- Indeks untuk tabel `jadwal`
+-- Indexes for table `jadwal`
 --
 ALTER TABLE `jadwal`
   ADD PRIMARY KEY (`id_jadwal`),
   ADD KEY `id_kelas` (`id_kelas`);
 
 --
--- Indeks untuk tabel `jobs`
+-- Indexes for table `jobs`
 --
 ALTER TABLE `jobs`
   ADD PRIMARY KEY (`id`),
   ADD KEY `jobs_queue_index` (`queue`);
 
 --
--- Indeks untuk tabel `job_batches`
+-- Indexes for table `job_batches`
 --
 ALTER TABLE `job_batches`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `jurusan`
+-- Indexes for table `jurusan`
 --
 ALTER TABLE `jurusan`
   ADD PRIMARY KEY (`id_jurusan`);
 
 --
--- Indeks untuk tabel `kelas`
+-- Indexes for table `kelas`
 --
 ALTER TABLE `kelas`
   ADD PRIMARY KEY (`id_kelas`),
   ADD KEY `id_jurusan` (`id_jurusan`);
 
 --
--- Indeks untuk tabel `materi`
+-- Indexes for table `mata_pelajaran`
+--
+ALTER TABLE `mata_pelajaran`
+  ADD PRIMARY KEY (`id_mapel`);
+
+--
+-- Indexes for table `materi`
 --
 ALTER TABLE `materi`
   ADD PRIMARY KEY (`id_materi`);
 
 --
--- Indeks untuk tabel `migrations`
+-- Indexes for table `migrations`
 --
 ALTER TABLE `migrations`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `password_reset_tokens`
+-- Indexes for table `password_reset_tokens`
 --
 ALTER TABLE `password_reset_tokens`
   ADD PRIMARY KEY (`email`);
 
 --
--- Indeks untuk tabel `sessions`
+-- Indexes for table `sessions`
 --
 ALTER TABLE `sessions`
   ADD PRIMARY KEY (`id`),
@@ -505,94 +536,52 @@ ALTER TABLE `sessions`
   ADD KEY `sessions_last_activity_index` (`last_activity`);
 
 --
--- Indeks untuk tabel `siswa`
+-- Indexes for table `siswa`
 --
 ALTER TABLE `siswa`
   ADD PRIMARY KEY (`id_siswa`),
   ADD KEY `id_kelas` (`id_kelas`);
 
 --
--- Indeks untuk tabel `users`
+-- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `users_email_unique` (`email`);
 
 --
--- AUTO_INCREMENT untuk tabel yang dibuang
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT untuk tabel `absensi`
---
-ALTER TABLE `absensi`
-  MODIFY `id_absen` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT untuk tabel `admin`
+-- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
   MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT untuk tabel `failed_jobs`
+-- AUTO_INCREMENT for table `failed_jobs`
 --
 ALTER TABLE `failed_jobs`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT untuk tabel `guru`
+-- AUTO_INCREMENT for table `guru`
 --
 ALTER TABLE `guru`
-  MODIFY `id_guru` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_guru` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT untuk tabel `jadwal`
+-- AUTO_INCREMENT for table `mata_pelajaran`
 --
-ALTER TABLE `jadwal`
-  MODIFY `id_jadwal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+ALTER TABLE `mata_pelajaran`
+  MODIFY `id_mapel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
--- AUTO_INCREMENT untuk tabel `jobs`
---
-ALTER TABLE `jobs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT untuk tabel `jurusan`
---
-ALTER TABLE `jurusan`
-  MODIFY `id_jurusan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
-
---
--- AUTO_INCREMENT untuk tabel `kelas`
---
-ALTER TABLE `kelas`
-  MODIFY `id_kelas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=131;
-
---
--- AUTO_INCREMENT untuk tabel `materi`
---
-ALTER TABLE `materi`
-  MODIFY `id_materi` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT untuk tabel `migrations`
---
-ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT untuk tabel `siswa`
+-- AUTO_INCREMENT for table `siswa`
 --
 ALTER TABLE `siswa`
-  MODIFY `id_siswa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT untuk tabel `users`
---
-ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id_siswa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
