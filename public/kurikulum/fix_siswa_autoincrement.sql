@@ -1,0 +1,3 @@
+USE smkn1_kurikulum_v3;
+
+ALTER TABLE siswa MODIFY id_siswa INT AUTO_INCREMENT PRIMARY KEY;

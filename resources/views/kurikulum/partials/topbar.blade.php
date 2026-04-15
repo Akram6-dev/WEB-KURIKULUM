@@ -7,7 +7,7 @@
     <li><a href="{{ route('kurikulum.guru.index') }}" class="{{ request()->routeIs('kurikulum.guru.*') ? 'active' : '' }}">Data Guru</a></li>
     <li><a href="{{ route('kurikulum.siswa.index') }}" class="{{ request()->routeIs('kurikulum.siswa.*') ? 'active' : '' }}">Data Siswa</a></li>
     <li><a href="{{ route('kurikulum.jadwal.index') }}" class="{{ request()->routeIs('kurikulum.jadwal.*') ? 'active' : '' }}">Jadwal</a></li>
-    <li><a href="{{ route('kurikulum.materi.index') }}" class="{{ request()->routeIs('kurikulum.materi.*') ? 'active' : '' }}">Materi</a></li>
+    <li><a href="{{ route('kurikulum.kelas.index') }}" class="{{ request()->routeIs('kurikulum.kelas.*') ? 'active' : '' }}">Wali Kelas</a></li>
     <li style="margin-top:12px;">
     @if(session('admin'))
       <a class="btn" href="{{ route('kurikulum.logout') }}" style="background:#ef4444;">Logout</a>

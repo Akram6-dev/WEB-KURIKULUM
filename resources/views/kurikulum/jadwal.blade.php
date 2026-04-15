@@ -38,7 +38,19 @@
             
             <input type="time" name="jam_mulai" placeholder="Jam Mulai" value="{{ $editData->jam_mulai ?? '' }}" required style="width:100%;padding:8px;margin:5px 0;">
             <input type="time" name="jam_selesai" placeholder="Jam Selesai" value="{{ $editData->jam_selesai ?? '' }}" required style="width:100%;padding:8px;margin:5px 0;">
-            <input type="text" name="mapel" placeholder="Mata Pelajaran" value="{{ $editData->mapel ?? '' }}" required style="width:100%;padding:8px;margin:5px 0;">
+            
+            <div style="position:relative;">
+                <input type="text" id="mapelSearch" placeholder="Cari dan pilih mata pelajaran..." autocomplete="off" style="width:100%;padding:8px;margin:5px 0;border:1px solid #ddd;border-radius:4px;" value="{{ $editData->mapel ?? '' }}">
+                <input type="hidden" name="mapel" id="mapelValue" value="{{ $editData->mapel ?? '' }}" required>
+                <div id="mapelDropdown" style="display:none;position:absolute;width:100%;max-height:200px;overflow-y:auto;background:#fff;border:1px solid #ddd;border-radius:4px;z-index:1000;margin-top:-5px;">
+                    @foreach($mapel as $m)
+                    <div class="mapel-item" data-name="{{ $m->nama_mapel }}" style="padding:8px;cursor:pointer;border-bottom:1px solid #f0f0f0;">
+                        <span style="font-size:11px;background:{{ $m->kategori == 'Produktif' ? '#dbeafe' : '#dcfce7' }};color:{{ $m->kategori == 'Produktif' ? '#1d4ed8' : '#15803d' }};padding:2px 6px;border-radius:4px;margin-right:6px;">{{ $m->kategori }}</span>
+                        {{ $m->nama_mapel }}
+                    </div>
+                    @endforeach
+                </div>
+            </div>
             <input type="text" name="guru" placeholder="Guru Pengajar" value="{{ $editData->guru_pengampu ?? '' }}" required style="width:100%;padding:8px;margin:5px 0;">
             
             <button type="submit" class="btn" style="margin-top:10px;">{{ $editData ? 'Update' : 'Tambah' }}</button>
@@ -124,7 +136,37 @@ document.addEventListener('click', (e) => {
   if (!e.target.closest('#kelasSearch') && !e.target.closest('#kelasDropdown')) {
     kelasDropdown.style.display = 'none';
   }
+  if (!e.target.closest('#mapelSearch') && !e.target.closest('#mapelDropdown')) {
+    mapelDropdown.style.display = 'none';
+  }
 });
+
+const mapelSearch = document.getElementById('mapelSearch');
+const mapelValue = document.getElementById('mapelValue');
+const mapelDropdown = document.getElementById('mapelDropdown');
+const mapelItems = document.querySelectorAll('.mapel-item');
+
+if (mapelSearch) {
+    mapelSearch.addEventListener('focus', () => { mapelDropdown.style.display = 'block'; filterMapel(); });
+    mapelSearch.addEventListener('input', filterMapel);
+
+    function filterMapel() {
+        const search = mapelSearch.value.toLowerCase();
+        mapelItems.forEach(item => {
+            item.style.display = item.dataset.name.toLowerCase().includes(search) ? 'block' : 'none';
+        });
+    }
+
+    mapelItems.forEach(item => {
+        item.addEventListener('click', () => {
+            mapelSearch.value = item.dataset.name;
+            mapelValue.value = item.dataset.name;
+            mapelDropdown.style.display = 'none';
+        });
+        item.addEventListener('mouseenter', () => item.style.background = '#f0f0f0');
+        item.addEventListener('mouseleave', () => item.style.background = '#fff');
+    });
+}
 </script>
 </body>
 </html>

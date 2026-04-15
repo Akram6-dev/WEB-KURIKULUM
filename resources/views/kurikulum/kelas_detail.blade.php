@@ -10,6 +10,9 @@
 @include('kurikulum.partials.topbar')
 
 <div class="main-content container">
+    <div style="margin-bottom:15px;">
+        <a href="javascript:history.back()" class="btn-outline" style="display:inline-flex;align-items:center;gap:6px;">Kembali</a>
+    </div>
     @if(!$kelas)
         <div class="card"><p>Kelas tidak ditemukan.</p></div>
     @else
@@ -45,6 +48,7 @@
                     <tr>
                         <th>No</th>
                         <th>Nama</th>
+                        <th>Jenis Kelamin</th>
                         <th>NIS</th>
                     </tr>
                 </thead>
@@ -53,6 +57,7 @@
                     <tr>
                         <td>{{ $index + 1 }}</td>
                         <td>{{ $r->nama_siswa }}</td>
+                        <td>{{ $r->jk === 'L' ? 'Laki-laki' : 'Perempuan' }}</td>
                         <td>{{ $r->nis }}</td>
                     </tr>
                     @endforeach

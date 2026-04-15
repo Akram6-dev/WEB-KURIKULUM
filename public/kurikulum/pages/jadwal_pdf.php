@@ -165,7 +165,7 @@ header('Content-Disposition: inline; filename="jadwal.pdf"');
 </head>
 <body>
     <div class="print-btn">
-        <button onclick="window.print()">🖨️ Cetak / Simpan sebagai PDF</button>
+        <button onclick="window.print()">Cetak / Simpan sebagai PDF</button>
     </div>
     
     <div class="header">

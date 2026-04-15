@@ -20,10 +20,12 @@ class KurikulumController extends Controller
         $kelasList = [];
         
         if ($tingkat) {
-            $kelasList = DB::table('kelas')
-                ->where('id_jurusan', $id)
-                ->where('tingkat', $tingkat)
-                ->orderBy('nama_kelas')
+            $kelasList = DB::table('kelas as k')
+                ->leftJoin(DB::raw('(SELECT id_kelas, COUNT(*) as jumlah_siswa FROM siswa GROUP BY id_kelas) as s'), 'k.id_kelas', '=', 's.id_kelas')
+                ->select('k.*', DB::raw('COALESCE(s.jumlah_siswa, 0) as jumlah_siswa'))
+                ->where('k.id_jurusan', $id)
+                ->where('k.tingkat', $tingkat)
+                ->orderBy('k.nama_kelas')
                 ->get();
         }
         
@@ -34,11 +36,12 @@ class KurikulumController extends Controller
     {
         $kelas = DB::table('kelas as k')
             ->leftJoin('jurusan as j', 'k.id_jurusan', '=', 'j.id_jurusan')
-            ->select('k.*', 'j.nama_jurusan')
+            ->leftJoin(DB::raw('(SELECT id_kelas, COUNT(*) as jumlah_siswa, SUM(jk="L") as laki, SUM(jk="P") as perempuan FROM siswa GROUP BY id_kelas) as s'), 'k.id_kelas', '=', 's.id_kelas')
+            ->select('k.*', 'j.nama_jurusan', DB::raw('COALESCE(s.jumlah_siswa, 0) as jumlah_siswa'), DB::raw('COALESCE(s.laki, 0) as laki'), DB::raw('COALESCE(s.perempuan, 0) as perempuan'))
             ->where('k.id_kelas', $id)
             ->first();
         
-        $siswa = DB::table('siswa')->where('id_kelas', $id)->get();
+        $siswa = DB::table('siswa')->where('id_kelas', $id)->orderBy('nama_siswa')->get();
         
         return view('kurikulum.kelas_detail', compact('kelas', 'siswa'));
     }
@@ -197,30 +200,30 @@ class KurikulumController extends Controller
     {
         $canEdit = session('admin') ? true : false;
         $kelas = DB::table('kelas')->orderBy('nama_kelas')->get();
+        $mapel = DB::table('mata_pelajaran')->orderBy('kategori')->orderBy('nama_mapel')->get();
         $jadwal = DB::table('jadwal')
             ->orderByRaw("FIELD(hari,'Senin','Selasa','Rabu','Kamis','Jumat','Sabtu')")
             ->orderBy('jam_mulai')
             ->get();
         $editData = null;
-        
-        return view('kurikulum.jadwal', compact('canEdit', 'kelas', 'jadwal', 'editData'));
+        return view('kurikulum.jadwal', compact('canEdit', 'kelas', 'mapel', 'jadwal', 'editData'));
     }
-    
+
     public function jadwalEdit($id)
     {
         $canEdit = session('admin') ? true : false;
         $kelas = DB::table('kelas')->orderBy('nama_kelas')->get();
+        $mapel = DB::table('mata_pelajaran')->orderBy('kategori')->orderBy('nama_mapel')->get();
         $jadwal = DB::table('jadwal')
             ->orderByRaw("FIELD(hari,'Senin','Selasa','Rabu','Kamis','Jumat','Sabtu')")
             ->orderBy('jam_mulai')
             ->get();
         $editData = DB::table('jadwal as j')
             ->leftJoin('kelas as k', 'j.id_kelas', '=', 'k.id_kelas')
-            ->select('j.*', 'k.nama_kelas as kelas_nama')
+            ->select('j.*', 'k.nama_kelas as kelas_nama', 'k.nama_kelas')
             ->where('j.id_jadwal', $id)
             ->first();
-        
-        return view('kurikulum.jadwal', compact('canEdit', 'kelas', 'jadwal', 'editData'));
+        return view('kurikulum.jadwal', compact('canEdit', 'kelas', 'mapel', 'jadwal', 'editData'));
     }
     
     public function jadwalStore(Request $request)
@@ -274,19 +277,21 @@ class KurikulumController extends Controller
     public function guruIndex()
     {
         $canEdit = session('admin') ? true : false;
+        $mapel = DB::table('mata_pelajaran')->orderBy('kategori')->orderBy('nama_mapel')->get();
         $guru = DB::table('guru')->orderBy('id_guru', 'desc')->get();
         $editData = null;
         
-        return view('kurikulum.guru', compact('canEdit', 'guru', 'editData'));
+        return view('kurikulum.guru', compact('canEdit', 'guru', 'editData', 'mapel'));
     }
     
     public function guruEdit($id)
     {
         $canEdit = session('admin') ? true : false;
+        $mapel = DB::table('mata_pelajaran')->orderBy('kategori')->orderBy('nama_mapel')->get();
         $guru = DB::table('guru')->orderBy('id_guru', 'desc')->get();
         $editData = DB::table('guru')->where('id_guru', $id)->first();
         
-        return view('kurikulum.guru', compact('canEdit', 'guru', 'editData'));
+        return view('kurikulum.guru', compact('canEdit', 'guru', 'editData', 'mapel'));
     }
     
     public function guruStore(Request $request)
