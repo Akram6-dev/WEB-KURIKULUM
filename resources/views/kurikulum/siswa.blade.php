@@ -47,10 +47,11 @@
     @endif
     
     <div class="card">
-        <div style="margin-bottom:15px;">
+        <div style="margin-bottom:15px;display:flex;gap:10px;align-items:center;">
             <input type="text" id="searchFilterKelas" placeholder="Cari Kelas..." style="padding:8px;border:1px solid #ddd;border-radius:4px;width:200px;">
+            <button id="sortBtn" onclick="toggleSort()" class="btn-outline" style="padding:6px 12px;">⇅</button>
         </div>
-        <table class="data-table">
+        <table class="data-table" id="siswaTabel">
             <thead>
                 <tr>
                     <th>No</th>
@@ -132,6 +133,21 @@ searchFilter.addEventListener('input', function() {
         row.style.display = kelasCell.includes(search) ? '' : 'none';
     });
 });
+
+let sortOrder = 'asc';
+function toggleSort() {
+    const btn = document.getElementById('sortBtn');
+    sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+    btn.textContent = sortOrder === 'asc' ? '⇅' : '⇵';
+    const tbody = document.querySelector('#siswaTabel tbody');
+    const rows = Array.from(tbody.querySelectorAll('tr'));
+    rows.sort((a, b) => {
+        const nameA = a.cells[1].textContent.trim().toLowerCase();
+        const nameB = b.cells[1].textContent.trim().toLowerCase();
+        return sortOrder === 'asc' ? nameA.localeCompare(nameB) : nameB.localeCompare(nameA);
+    });
+    rows.forEach((row, i) => { row.cells[0].textContent = i + 1; tbody.appendChild(row); });
+}
 </script>
 </body>
 </html>

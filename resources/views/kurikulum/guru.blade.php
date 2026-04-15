@@ -44,7 +44,16 @@
     @endif
     
     <div class="card">
-        <table class="data-table">
+        <div style="margin-bottom:15px;display:flex;gap:10px;align-items:right;">
+        <button id="sortBtn" onclick="toggleSort()" class="btn-outline" style="padding:6px 12px;">⇅</button>
+        <select id="filterMapelGuru" style="padding:6px 10px;border:1px solid #ddd;border-radius:4px;">
+                <option value="">Semua Mapel</option>
+                @foreach($mapel as $m)
+                <option value="{{ $m->nama_mapel }}">{{ $m->nama_mapel }}</option>
+                @endforeach
+            </select>
+        </div>
+        <table class="data-table" id="guruTabel">
             <thead>
                 <tr>
                     <th>No</th>
@@ -108,6 +117,33 @@ document.addEventListener('click', (e) => {
     if (!e.target.closest('#mapelSearch') && !e.target.closest('#mapelDropdown')) {
         mapelDropdown.style.display = 'none';
     }
+});
+
+let sortOrder = 'asc';
+function toggleSort() {
+    const btn = document.getElementById('sortBtn');
+    sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+    btn.textContent = sortOrder === 'asc' ? '⇅' : '⇵';
+    const tbody = document.querySelector('#guruTabel tbody');
+    const rows = Array.from(tbody.querySelectorAll('tr')).filter(r => r.style.display !== 'none');
+    rows.sort((a, b) => {
+        const nameA = a.cells[1].textContent.trim().toLowerCase();
+        const nameB = b.cells[1].textContent.trim().toLowerCase();
+        return sortOrder === 'asc' ? nameA.localeCompare(nameB) : nameB.localeCompare(nameA);
+    });
+    rows.forEach((row, i) => { row.cells[0].textContent = i + 1; tbody.appendChild(row); });
+}
+
+document.getElementById('filterMapelGuru').addEventListener('change', function() {
+    const filter = this.value.toLowerCase();
+    const rows = document.querySelectorAll('#guruTabel tbody tr');
+    let no = 1;
+    rows.forEach(row => {
+        const mapelCell = row.cells[3].textContent.toLowerCase();
+        const show = filter === '' || mapelCell.includes(filter);
+        row.style.display = show ? '' : 'none';
+        if (show) row.cells[0].textContent = no++;
+    });
 });
 </script>
 </body>
